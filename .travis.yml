@@ -6,8 +6,8 @@ stages:
 jobs:
   include:
     - stage: "Build and Test"
-      language: java
       jdk: oraclejdk11
+      language: java
       addons:
         sonarcloud:
           organization: "redwank"
@@ -26,7 +26,8 @@ jobs:
       script:
         - echo "NPM install and build"
         - npm install
-        - npm run build
+        - npm run lint
+        - npm run test
     - stage: "Package"
       if: branch = develop
       before_script:
