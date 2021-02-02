@@ -17,7 +17,7 @@ jobs:
       script:
         - echo "Maven build"
         - echo "Run test coverage and Quality Gate"
-        #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=
+        - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=RedwanK_Travis-init
     - stage: "Build and Test"
       language: node.js
       node_js: "12.20"
