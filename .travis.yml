@@ -25,6 +25,8 @@ jobs:
         - cd sample-application-frontend
       script:
         - echo "NPM install and build"
+        - npm install
+        - npm run build
     - stage: "Package"
       if: branch = develop
       before_script:
