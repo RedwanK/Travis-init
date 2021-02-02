@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    generate-ddl: false
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://${embedded.postgresql.host}:${embedded.postgresql.port}/${embedded.postgresql.schema}"
+    username: ${embedded.postgresql.user}
+    password: ${embedded.postgresql.password}

@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: seed_database
+      author: blegros
+      changes:
+        - sql:
+            sql: "
+              INSERT INTO departments (name)
+              VALUES ('IRC'),
+                     ('ETI'),
+                     ('CGP');
+              "
+      rollback:
+        - sql:
+            sql: "
+              DELETE FROM students;
+              DELETE FROM departments;
+              "

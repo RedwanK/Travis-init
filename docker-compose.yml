@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  backend:
+    container_name: backend
+    build: ./sample-application-backend
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/SchoolOrganisation
+    networks:
+      - app-network
+    depends_on:
+      - database
+
+  database:
+    container_name: database
+    image: postgres:12.0-alpine
+    networks:
+      - app-network
+    environment:
+      - POSTGRES_PASSWORD=takimapass
+      - POSTGRES_USER=takima
+      - POSTGRES_DB=SchoolOrganisation
+
+  frontend:
+    container_name: frontend
+    build: ./sample-application-frontend
+    ports:
+      - "82:80"
+    networks:
+      - app-network
+
+volumes:
+  my_db_volume:
+    driver: local
+
+networks:
+  app-network:

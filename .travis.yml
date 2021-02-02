@@ -1,0 +1,55 @@
+git:
+  depth: 5
+stages:
+  - "Build and Test"
+  - "Package"
+jobs:
+  include:
+    - stage: "Build and Test"
+      language: java
+      jdk: oraclejdk11
+      addons:
+        sonarcloud:
+          organization: "redwank"
+          token: "$sonarCloudToken"
+      before_script:
+        - cd sample-application-backend
+      script:
+        - echo "Maven build"
+        - echo "Run test coverage and Quality Gate"
+        #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=
+    - stage: "Build and Test"
+      language: node.js
+      node_js: "12.20"
+      before_script:
+        - cd sample-application-frontend
+      script:
+        - echo "NPM install and build"
+    - stage: "Package"
+      if: branch = develop
+      before_script:
+        - cd sample-application-backend
+      script:
+        - echo "Docker build ..."
+        - docker build -t $dockerId/backend .
+        - echo "Docker login ..."
+        - echo "$DockerPwd" | docker login -u "$dockerId" --password-stdin
+        - echo "Docker push ..."
+        - docker push $dockerId/backend
+    - stage: "Package"
+      if: branch = develop
+      before_script:
+        - cd sample-application-frontend
+      script:
+        - echo "Docker build ..."
+        - docker build -t $dockerId/frontend .
+        - echo "Docker login ..."
+        - echo "$DockerPwd" | docker login -u "$dockerId" --password-stdin
+        - echo "Docker push ..."
+        - docker push $dockerId/frontend
+cache:
+  directories:
+    - "$HOME/.m2/repository"
+    - "$HOME/.npm"
+services:
+  - docker
