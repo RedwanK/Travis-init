@@ -1,0 +1,26 @@
+- hosts: all
+  gather_facts: false
+  become: yes
+
+  tasks:
+      # install Docker
+    - name: Install yum-utils
+      yum:
+        name: yum-utils
+        state: latest
+
+    - name: Install device-mapper-persistent-data
+      yum:
+          name: device-mapper-persistent-data
+          state: latest
+
+    - name: Install lvm2
+      yum:
+          name: lvm2
+          state: latest
+
+  roles:
+      - docker
+      - network
+      - database
+      - app

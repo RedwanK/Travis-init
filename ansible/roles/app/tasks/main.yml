@@ -1,0 +1,23 @@
+---
+# tasks file for roles/app
+
+- name: Create backend
+  docker_container:
+    name: backend
+    image: redwank/backend
+    state: started
+    env:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/SchoolOrganisation
+    networks:
+        - name: global_network
+
+
+- name: Create frontend
+  docker_container:
+    name: frontend
+    image: redwank/frontend
+    state: started
+    ports:
+        - "80:80"
+    networks:
+        - name: global_network

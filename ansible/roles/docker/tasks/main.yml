@@ -1,0 +1,35 @@
+---
+# tasks file for roles/docker
+
+- name: Add Docker stable repository
+  yum_repository:
+      name: docker-ce
+      description: Docker CE Stable - $basearch
+      baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+      state: present
+      enabled: yes
+      gpgcheck: yes
+      gpgkey: https://download.docker.com/linux/centos/gpg
+
+- name: Install Docker
+  yum:
+      name: docker-ce
+      state: present
+
+- name: Make sure Docker is running
+  service: name=docker state=started
+  tags: docker
+
+- name: Install EPEL
+  yum:
+      name: epel-release
+      state: present
+
+- name: Install pip
+  yum:
+      name: python-pip
+      state: present
+
+- name: Install docker for python
+  pip:
+      name: docker

@@ -50,6 +50,14 @@ jobs:
         - echo "$DockerPwd" | docker login -u "$dockerId" --password-stdin
         - echo "Docker push ..."
         - docker push $dockerId/frontend
+    - stage: "Deploy"
+      if: branch = deploy
+      before_script:
+        - cd ansible
+      script:
+        - echo "Deployment ..."
+        - docker build -t $dockerId/ansible
+        - docker run $dockerId/ansible
 cache:
   directories:
     - "$HOME/.m2/repository"
